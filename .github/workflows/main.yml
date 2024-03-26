@@ -1,8 +1,8 @@
-name: Argo CD GitOps CI/CD
+name: GitOps CI/CD
 on:
   push:
     branches:
-    - main
+    - master
   
 jobs:
   build:
@@ -48,3 +48,10 @@ jobs:
         git config --global user.email 'rajaniindia1999@gamil.com'
         git commit -am "updating image tag"
         git push
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --region us-east-1 --name eks-WU
+
+    - name: Deploy nodejs helm chart to EKS
+      run: |
+        helm upgrade first --install java-chart --namespace helm-deploy-eks
